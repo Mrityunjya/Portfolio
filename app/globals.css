@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+/* ----------------------------- */
+/* 1. Theme Configuration        */
+/* ----------------------------- */
+:root {
+  /* Recruiter Mode: Minimal & Professional */
+  --bg: #000000;
+  --fg: #fafafa;
+  --muted: #71717a;
+  --border: #27272a;
+  --accent: #3b82f6;
+  --glass: rgba(255, 255, 255, 0.03);
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+[data-theme="explorer"] {
+  /* Explorer Mode: Neon & High Contrast */
+  --bg: #020617;
+  --fg: #ffffff;
+  --muted: #10b981;
+  --border: rgba(16, 185, 129, 0.3);
+  --accent: #10b981;
+  --glass: rgba(16, 185, 129, 0.05);
+}
+
+/* ----------------------------- */
+/* 2. Base & Typography          */
+/* ----------------------------- */
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.logo-container {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--fg);
+}
+
+h1 {
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  margin: 0 0 1.5rem 0; /* Increased spacing */
+  text-align: center;
+}
+
+[data-theme="explorer"] h1 {
+  text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+p.subtitle {
+  color: var(--muted);
+  font-size: 1.125rem; /* Slightly larger */
+  font-weight: 500;
+  line-height: 1.6;
+  margin-bottom: 3rem; /* More spacing before buttons */
+  text-align: center;
+}
+
+/* ----------------------------- */
+/* 3. Button Styles              */
+/* ----------------------------- */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #000 !important;
+  text-decoration: none;
+  margin-right: 1rem;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #2563eb; /* Slightly darker accent */
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  color: var(--fg) !important;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #52525b;
+  transform: translateY(-1px);
+}
+
+[data-theme="explorer"] .btn-secondary:hover {
+  background: var(--accent);
+  color: #000 !important;
+  box-shadow: 0 0 20px var(--accent);
+}
+
+/* ----------------------------- */
+/* 4. Page Wrapper & Layout      */
+/* ----------------------------- */
+.page-wrapper {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 2rem;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* ----------------------------- */
+/* 5. Dual-Mode Buttons (Top Right) */
+/* ----------------------------- */
+.mode-toggle-group {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.mode-toggle {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mode-toggle.active {
+  border-color: var(--accent);
+  color: var(--fg);
+  background: var(--accent);
+}
+
+.mode-toggle:hover:not(.active) {
+  border-color: var(--accent);
+  color: var(--fg);
+}
+
+/* ----------------------------- */
+/* 6. Explorer Grid Overlay      */
+/* ----------------------------- */
+.explorer-grid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(circle at center, black, transparent 85%);
+}
+/* Custom Scrollbar for Explorer Mode */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #010208;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(6, 182, 212, 0.2);
+  border-radius: 10px;
+  border: 1px solid rgba(6, 182, 212, 0.1);
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 182, 212, 0.5);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+}
