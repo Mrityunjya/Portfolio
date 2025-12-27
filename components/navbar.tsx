@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useCognitiveMode } from "@/context/CognitiveModeStore";
+import { useCognitiveMode } from "./context/CognitiveModeStore";
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState("hero");
