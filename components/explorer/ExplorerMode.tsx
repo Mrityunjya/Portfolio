@@ -1,28 +1,34 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import dynamic from "next/dynamic";
+
+// 1. IMPORT REAL DATA AND TYPE
+import { projects, type Project } from "@/data/projects"; 
+
+// ✅ FIX: Dynamically import ExplorerScene with SSR disabled
+// This prevents the "Hooks can only be used within the Canvas component" error
+// by ensuring the Canvas and its children load together on the client.
+const ExplorerScene = dynamic(() => import("./ExplorerScene"), { 
+  ssr: false,
+  loading: () => <div className="fixed inset-0 bg-[#010208]" /> 
+});
 
 // Explorer Components
-import ExplorerScene from "./ExplorerScene";
 import ExplorerSkills from "./ExplorerSkills";
 import ExplorerProject from "./ExplorerProject";
 import ExplorerCertificates from "./ExplorerCerificates";
 import ExplorerResearch from "./ExplorerResearch";
 import ExplorerExperience from "./ExplorerExperience";
 import ExplorerContact from "./ExplorerContact";
-import ExplorerAbout from "./ExplorerAbout"; // Advanced About
+import ExplorerAbout from "./ExplorerAbout"; 
 import RebootTransition from "./RebootTransition";
 import SystemStatus from "./SystemStatus";
-import Navbar from "./navbar"; // The Explorer-specific HUD
+import Navbar from "./navbar"; 
 
 // Standard Shared Components
 import Hero from "../Hero";
-
-const projects = [
-  { id: 1, title: "Harmonix", description: "AI-powered music visualization leveraging real-time neural processing.", techStack: ["Three.js", "React", "Tone.js"], github: "#", hologram: "NEURAL_AUDIO" },
-  { id: 2, title: "SHADE", description: "Space debris prediction engine using graph-based AI for orbital trajectory modeling.", techStack: ["Graph AI", "Next.js", "Three.js"], github: "#", hologram: "ORBITAL_DATA" },
-];
 
 const GlassCard = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
   <motion.div 
@@ -52,10 +58,8 @@ export default function ExplorerMode() {
   return (
     <div ref={containerRef} className="relative w-full min-h-screen bg-[#010208] text-white selection:bg-cyan-500/30 font-sans antialiased overflow-x-hidden">
       
-      {/* 1. LAYER: System Interrupts & Global HUD */}
       <RebootTransition isExplorer={true} />
       
-      {/* HUD components fade in after reboot laser sweep (delay 0.8s) */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -66,20 +70,17 @@ export default function ExplorerMode() {
         <motion.div style={{ scaleX }} className="fixed top-0 left-0 right-0 h-1 bg-cyan-500 z-[300] origin-left shadow-[0_0_15px_cyan]" />
       </motion.div>
 
-      {/* 2. LAYER: Procedural Background */}
+      {/* BACKGROUND SCENE */}
       <motion.div style={{ y: backgroundY }} className="fixed inset-0 z-0 pointer-events-none">
         <ExplorerScene />
       </motion.div>
 
-      {/* 3. LAYER: Interface Stack */}
       <main className="relative z-10 flex flex-col items-center gap-64 py-48 px-6 lg:px-12">
         
-        {/* Entry Node */}
         <section id="hero" className="w-full max-w-6xl text-center min-h-[70vh] flex items-center justify-center">
           <Hero />
         </section>
 
-        {/* Identity Node */}
         <section id="about" className="w-full max-w-4xl scroll-mt-40">
           <p className="diag-label">Log_Entry // Identity_Manifest</p>
           <GlassCard>
@@ -87,13 +88,11 @@ export default function ExplorerMode() {
           </GlassCard>
         </section>
 
-        {/* Trajectory Node */}
         <section id="experience" className="w-full max-w-5xl scroll-mt-40">
           <p className="diag-label">Log_Entry // Trajectory_Trace</p>
           <ExplorerExperience />
         </section>
 
-        {/* Diagnostic Node */}
         <section id="skills" className="w-full max-w-5xl scroll-mt-40">
           <GlassCard>
              <div className="flex flex-col gap-10">
@@ -106,17 +105,33 @@ export default function ExplorerMode() {
           </GlassCard>
         </section>
 
-        {/* Holographic Output Node */}
         <section id="projects" className="w-full max-w-6xl scroll-mt-40">
           <p className="diag-label">Log_Entry // Holographic_Output</p>
           <GlassCard className="!p-0">
             <div className="relative p-10 md:p-16">
-              <ExplorerProject project={projects[currentIndex]} />
+              <ExplorerProject project={projects[currentIndex] as any} />
+              
               <div className="flex justify-between w-full mt-16 px-6">
-                <button onClick={() => setCurrentIndex(c => (c === 0 ? projects.length - 1 : c - 1))} className="nav-btn group">
+                <button 
+                  onClick={() => setCurrentIndex(c => (c === 0 ? projects.length - 1 : c - 1))} 
+                  className="nav-btn group"
+                >
                   <span className="group-hover:-translate-x-1 transition-transform">←</span>
                 </button>
-                <button onClick={() => setCurrentIndex(c => (c === projects.length - 1 ? 0 : c + 1))} className="nav-btn group">
+                
+                <div className="flex items-center gap-2">
+                  {projects.map((_, i) => (
+                    <div 
+                      key={i} 
+                      className={`h-1 transition-all duration-300 ${i === currentIndex ? 'w-8 bg-cyan-500' : 'w-2 bg-white/10'}`} 
+                    />
+                  ))}
+                </div>
+
+                <button 
+                  onClick={() => setCurrentIndex(c => (c === projects.length - 1 ? 0 : c + 1))} 
+                  className="nav-btn group"
+                >
                    <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </button>
               </div>
@@ -124,23 +139,19 @@ export default function ExplorerMode() {
           </GlassCard>
         </section>
 
-        {/* Credentials Node */}
         <section id="certificates" className="w-full max-w-7xl scroll-mt-40">
            <ExplorerCertificates />
         </section>
 
-        {/* Intelligence Archives */}
         <section id="research" className="w-full max-w-4xl scroll-mt-40">
           <p className="diag-label">Log_Entry // Intelligence_Archives</p>
           <GlassCard><ExplorerResearch /></GlassCard>
         </section>
 
-        {/* Communication Uplink Node */}
         <section id="contact" className="w-full max-w-5xl scroll-mt-40 mb-32">
           <ExplorerContact />
         </section>
 
-        {/* Final Termination */}
         <footer className="flex flex-col items-center gap-8 opacity-30 hover:opacity-100 transition-all duration-700 pb-20">
            <div className="h-px w-48 bg-gradient-to-r from-transparent via-cyan-500 to-transparent shadow-[0_0_10px_cyan]" />
            <span className="text-[10px] font-mono uppercase tracking-[0.8em] animate-pulse">End_Of_Transmission</span>

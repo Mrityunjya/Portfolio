@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import Hero from "../../components/Hero";
-import About from "../../components/About";
-import Experience from "../../components/Experience";
-import ProjectsGrid from "../../components/Projects";
-import Skills from "../../components/Skills";
-import Certificates from "../../components/Certificates";
-import Contact from "../../components/Contact";
+import Hero from "../components/Hero";
+import About from "../components/About";
+import Experience from "../components/Experience";
+import ProjectsGrid from "../components/Projects";
+import Skills from "../components/Skills";
+import Certificates from "../components/Certificates";
+import Contact from "../components/Contact";
 
-import ExplorerMode from "../../components/explorer/ExplorerMode";
+import ExplorerMode from "../components/explorer/ExplorerMode";
 
 type Mode = "recruiter" | "explorer";
 

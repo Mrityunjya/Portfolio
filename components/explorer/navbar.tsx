@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCognitiveMode } from "@/context/CognitiveModeStore";
+import { useCognitiveMode } from "../context/CognitiveModeStore";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);

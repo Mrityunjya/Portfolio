@@ -1,42 +1,49 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
-
+    "target": "ESNext",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
-
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
-
+    /* ✅ Resolution: Critical for Next.js 16/Turbopack to find R3F context */
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-
     "jsx": "react-jsx",
     "incremental": true,
-
     "plugins": [
       {
         "name": "next"
       }
     ],
-
+    /* ✅ Type Discovery: Explicitly include three and node types */
+    "types": [
+      "node",
+      "three"
+    ],
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "./*"
+      ]
+    },
+    "forceConsistentCasingInFileNames": true
   },
-
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    ".next/dev/types/**/*.ts"
   ],
-
-  "exclude": ["node_modules", ".next"]
+  "exclude": [
+    "node_modules",
+    ".next"
+  ]
 }
