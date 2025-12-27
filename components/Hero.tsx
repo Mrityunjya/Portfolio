@@ -4,13 +4,15 @@ import ResumeButton from "./ResumeButton";
 
 type HeroProps = {
   mode?: "recruiter" | "explorer";
+  titleSize?: string; // Added this to fix the TypeScript error
 };
 
-export default function Hero({ mode }: HeroProps) {
+export default function Hero({ mode, titleSize }: HeroProps) {
   return (
     <section className="min-h-screen flex flex-col justify-center items-center text-center px-6">
       {/* Name / Identity */}
-      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+      {/* Updated className to use the titleSize prop, with your old sizes as the default */}
+      <h1 className={titleSize || "text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight"}>
         Mrityunjya Sankar
       </h1>
 
