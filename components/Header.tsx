@@ -1,6 +1,6 @@
 "use client";
 
-import { useCognitiveMode } from "@/context/CognitiveModeStore";
+import { useCognitiveMode } from "./context/CognitiveModeStore";
 
 export default function Header() {
   return (
